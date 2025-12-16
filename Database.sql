@@ -1,0 +1,22 @@
+CREATE DATABASE IF NOT EXISTS loyalty_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE loyalty_db;
+
+CREATE TABLE passengers (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(120) NOT NULL,
+  phone VARCHAR(30) NOT NULL,
+  card_number VARCHAR(30) NOT NULL UNIQUE,
+  bonus_balance INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE accruals (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  passenger_id INT NOT NULL,
+  trip_amount DECIMAL(10,2) NOT NULL,
+  rate_percent DECIMAL(5,2) NOT NULL DEFAULT 5.00,
+  bonus_earned INT NOT NULL,
+  note VARCHAR(255) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (passenger_id) REFERENCES passengers(id) ON DELETE CASCADE
+);
